@@ -3,6 +3,9 @@
 #ifndef TREE_H
 #define TREE_H
 
+#include <vector>
+#include <cstring>
+
 class Node {
 public:
   int key;
