@@ -30,7 +30,6 @@ public:
 
 private:
   void printTree(Node* node, int depth);
-  void dfs(Node* node, int depth, std::vector<std::pair<Node*, int>>& nodes);
 };
 
 #endif 
