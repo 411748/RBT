@@ -3,9 +3,11 @@
 #ifndef TREE_H
 #define TREE_H
 
+//includes
 #include <vector>
 #include <cstring>
 
+//creating class for node inside rbt
 class Node {
 public:
   int key;
@@ -16,8 +18,9 @@ public:
   Node(int key);
 };
 
+//creating class for rbt with funcs
 class RedBlackTree {
-private:
+private: //private things
   Node* root;
   Node* NIL;
   void fixInsert(Node* node);
@@ -26,7 +29,7 @@ private:
   void rightRotate(Node* y);
   void transplant(Node* u, Node* v);
   Node* minimum(Node* node);
-public:
+public: //public things
   RedBlackTree();
   ~RedBlackTree();
   void add(int key);

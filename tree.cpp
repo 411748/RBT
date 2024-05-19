@@ -1,5 +1,6 @@
 // tree.cpp
 
+//includes
 #include "tree.h"
 #include <fstream>
 #include <iostream>
@@ -9,13 +10,13 @@
 using namespace std;
 
 Node::Node(int key) : key(key), color(false), left(nullptr), right(nullptr), parent(nullptr) {}
-
+//constructor
 RedBlackTree::RedBlackTree() {
   NIL = new Node(0); 
   NIL->color = true;
   root = NIL;
 }
-
+//function to add a node to rbt that also checks for if needing to change colors
 void RedBlackTree::add(int key) {
   Node* new_node = new Node(key);
   new_node->left = NIL;
@@ -41,7 +42,7 @@ void RedBlackTree::add(int key) {
 
   fixInsert(new_node);
 }
-
+//function to search for a node inside rbt (returns true or false)
 bool RedBlackTree::search(int key) {
   Node* current = root;
   while (current != NIL && current->key != key) {
@@ -53,6 +54,7 @@ bool RedBlackTree::search(int key) {
   return current != NIL;
 }
 
+//function to remove a node from rbt, also will change colors and change orientation of rbt 
 void RedBlackTree::remove(int key) {
   Node* z = root;
   while (z != NIL) {
@@ -97,7 +99,7 @@ void RedBlackTree::remove(int key) {
   if (yOriginalColor)
     fixDelete(x);
 }
-
+//func used in delete to change oritientaytion 
 void RedBlackTree::transplant(Node* u, Node* v) {
   if (u->parent == nullptr)
     root = v;
@@ -107,13 +109,13 @@ void RedBlackTree::transplant(Node* u, Node* v) {
     u->parent->right = v;
   v->parent = u->parent;
 }
-
+//func used for delete
 Node* RedBlackTree::minimum(Node* node) {
   while (node->left != NIL)
     node = node->left;
   return node;
 }
-
+//func used to fix rbt after delete
 void RedBlackTree::fixDelete(Node* x) {
   while (x != root && x->color) {
     if (x == x->parent->left) {
@@ -168,7 +170,7 @@ void RedBlackTree::fixDelete(Node* x) {
   }
   x->color = true;
 }
-
+//func used to change rbt after adding
 void RedBlackTree::fixInsert(Node* node) {
   while (node != root && !(node->parent == nullptr) && !node->parent->color) {
     if (node->parent == node->parent->parent->left) {
@@ -207,7 +209,7 @@ void RedBlackTree::fixInsert(Node* node) {
   }
   root->color = true;
 }
-
+//func used to rotate the tree left
 void RedBlackTree::leftRotate(Node* x) {
   Node* y = x->right;
   x->right = y->left;
@@ -223,7 +225,7 @@ void RedBlackTree::leftRotate(Node* x) {
   y->left = x;
   x->parent = y;
 }
-
+//func used to rotate the tree right
 void RedBlackTree::rightRotate(Node* y) {
   Node* x = y->left;
   y->left = x->right;
@@ -239,12 +241,12 @@ void RedBlackTree::rightRotate(Node* y) {
   x->right = y;
   y->parent = x;
 }
-
+//func used to print tree
 void RedBlackTree::print() {
   cout << "Tree Formatted With Color And Parent: " << endl;
   printTree(root, 0);
 }
-
+//func used to add from file
 void RedBlackTree::readFromFile(const char* filename) {
   ifstream file(filename);
   int num;
@@ -253,14 +255,14 @@ void RedBlackTree::readFromFile(const char* filename) {
   }
   file.close();
 }
-
+//func made if needing to cleartree
 void RedBlackTree::clearTree(Node* node) {
   if(node == NIL) return;
   clearTree(node->left);
   clearTree(node->right);
   delete node;
 }
-
+//main func for pritning tree
 void RedBlackTree::printTree(Node* node, int depth) {
   if (node == NIL) {
     return;
@@ -285,7 +287,7 @@ void RedBlackTree::printTree(Node* node, int depth) {
   printTree(node->left, depth + 1);
 }
 
-
+//destructor
 RedBlackTree::~RedBlackTree() {
   clearTree(root);
 }
