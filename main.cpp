@@ -18,6 +18,7 @@ int main() {
     cout << "P: Print tree" << endl;
     cout << "Q: Quit" << endl;
     cout << "S: Search for a number" << endl;
+    cout << "R: Remove a number" << endl;
     cout << "Enter choice: ";
     cin >> choice;
      if(strcmp(choice, "A") == 0) {
@@ -51,6 +52,11 @@ int main() {
       } else {
 	cout << num << " is not in the tree" << endl;
       }
+    } else if(strcmp(choice, "R") == 0) {
+       int num;
+       cout << "Enter the number to remove: ";
+       cin >> num;
+       tree.remove(num);
     } else if(strcmp(choice, "Q") == 0) {
       running = 0;
     } else {

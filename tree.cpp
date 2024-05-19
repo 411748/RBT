@@ -53,6 +53,121 @@ bool RedBlackTree::search(int key) {
   return current != NIL;
 }
 
+void RedBlackTree::remove(int key) {
+  Node* z = root;
+  while (z != NIL) {
+    if (z->key == key)
+      break;
+    if (z->key < key)
+      z = z->right;
+    else
+      z = z->left;
+  }
+
+  if (z == NIL)
+    return; // Key not found
+
+  Node* y = z;
+  Node* x;
+  bool yOriginalColor = y->color;
+
+  if (z->left == NIL) {
+    x = z->right;
+    transplant(z, z->right);
+  } else if (z->right == NIL) {
+    x = z->left;
+    transplant(z, z->left);
+  } else {
+    y = minimum(z->right);
+    yOriginalColor = y->color;
+    x = y->right;
+    if (y->parent == z)
+      x->parent = y;
+    else {
+      transplant(y, y->right);
+      y->right = z->right;
+      y->right->parent = y;
+    }
+    transplant(z, y);
+    y->left = z->left;
+    y->left->parent = y;
+    y->color = z->color;
+  }
+
+  if (yOriginalColor)
+    fixDelete(x);
+}
+
+void RedBlackTree::transplant(Node* u, Node* v) {
+  if (u->parent == nullptr)
+    root = v;
+  else if (u == u->parent->left)
+    u->parent->left = v;
+  else
+    u->parent->right = v;
+  v->parent = u->parent;
+}
+
+Node* RedBlackTree::minimum(Node* node) {
+  while (node->left != NIL)
+    node = node->left;
+  return node;
+}
+
+void RedBlackTree::fixDelete(Node* x) {
+  while (x != root && x->color) {
+    if (x == x->parent->left) {
+      Node* w = x->parent->right;
+      if (!w->color) {
+        w->color = true;
+        x->parent->color = false;
+        leftRotate(x->parent);
+        w = x->parent->right;
+      }
+      if (w->left->color && w->right->color) {
+        w->color = false;
+        x = x->parent;
+      } else {
+        if (w->right->color) {
+          w->left->color = true;
+          w->color = false;
+          rightRotate(w);
+          w = x->parent->right;
+        }
+        w->color = x->parent->color;
+        x->parent->color = true;
+        w->right->color = true;
+        leftRotate(x->parent);
+        x = root;
+      }
+    } else {
+      Node* w = x->parent->left;
+      if (!w->color) {
+        w->color = true;
+        x->parent->color = false;
+        rightRotate(x->parent);
+        w = x->parent->left;
+      }
+      if (w->left->color && w->right->color) {
+        w->color = false;
+        x = x->parent;
+      } else {
+        if (w->left->color) {
+          w->right->color = true;
+          w->color = false;
+          leftRotate(w);
+          w = x->parent->left;
+        }
+        w->color = x->parent->color;
+        x->parent->color = true;
+        w->left->color = true;
+        rightRotate(x->parent);
+        x = root;
+      }
+    }
+  }
+  x->color = true;
+}
 
 void RedBlackTree::fixInsert(Node* node) {
   while (node != root && !(node->parent == nullptr) && !node->parent->color) {
