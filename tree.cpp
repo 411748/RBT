@@ -42,6 +42,18 @@ void RedBlackTree::add(int key) {
   fixInsert(new_node);
 }
 
+bool RedBlackTree::search(int key) {
+  Node* current = root;
+  while (current != NIL && current->key != key) {
+    if (key < current->key)
+      current = current->left;
+    else
+      current = current->right;
+  }
+  return current != NIL;
+}
+
+
 void RedBlackTree::fixInsert(Node* node) {
   while (node != root && !(node->parent == nullptr) && !node->parent->color) {
     if (node->parent == node->parent->parent->left) {

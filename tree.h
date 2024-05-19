@@ -27,6 +27,7 @@ public:
   RedBlackTree();
   ~RedBlackTree();
   void add(int key);
+  bool search(int key);
   void print();
   void readFromFile(const char* filename);
   void clearTree(Node* node);

@@ -17,6 +17,7 @@ int main() {
     cout << "AF: Add numbers from file" << endl;
     cout << "P: Print tree" << endl;
     cout << "Q: Quit" << endl;
+    cout << "S: Search for a number" << endl;
     cout << "Enter choice: ";
     cin >> choice;
      if(strcmp(choice, "A") == 0) {
@@ -41,6 +42,15 @@ int main() {
       file.close();
     } else if (strcmp(choice, "P") == 0) {
       tree.print();
+    } else if(strcmp(choice, "S") == 0) {
+      int num;
+      cout << "Enter the number to search for: ";
+      cin >> num;
+      if(tree.search(num)) {
+	cout << num << " is in the tree" << endl;
+      } else {
+	cout << num << " is not in the tree" << endl;
+      }
     } else if(strcmp(choice, "Q") == 0) {
       running = 0;
     } else {
